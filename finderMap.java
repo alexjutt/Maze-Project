@@ -5,12 +5,26 @@ public class finderMap{
     //doubly-subscripted array that holds the map data. Remember that “\n” can be stored in
     //strings to designate the next line.
 
-    public static int rows = 0;
+    public static int rows = 1; //fencepost problem, starts at 1 for counting
     public static int cols = 0;
     public static char[][] maze = new char[rows][cols];
 
     public finderMap(String input){
-        
+        //for each instance of "\n" in the input string, increment rows by 1
+        input = input.replace("\n", "N");
+        for(int i = 0; i < input.length(); i++){
+            if(input.charAt(i) == 'N'){
+                rows++;
+            }
+        input = input.replace("N", "");
+        cols = input.length() / rows;
+        }
+        maze = new char[rows][cols];
+        for(int i = 0; i <= rows; i += cols){
+            for(int j = 0; j <= cols; j++){
+                maze[i][j] = input.charAt(i*cols + j);
+            }
+        }
     }
 
     //creates a char 2d array displaying all walkable spaces in the maze
