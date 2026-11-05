@@ -1,16 +1,22 @@
-public class maze{
-    public static String[][] maze == new String[][]
+public class finderMap{
+    //public static String[][] maze == new String[][];
 
     //takes a String and stores the map into the
     //doubly-subscripted array that holds the map data. Remember that “\n” can be stored in
     //strings to designate the next line.
-    public maze(String map){
+
+    public static int rows = 0;
+    public static int cols = 0;
+    public static char[][] maze = new char[rows][cols];
+
+    public finderMap(String input){
         
     }
 
+    //creates a char 2d array displaying all walkable spaces in the maze
     public char[][] convert(String input){
-        int rows = 0;
-        int cols = 0;
+        rows = 0;
+        cols = 0;
 
 
 
