@@ -8,6 +8,7 @@ public class finderMap{
     public static int rows = 1; //fencepost problem, starts at 1 for counting
     public static int cols = 0;
     public static char[][] maze = new char[rows][cols];
+    public static boolean[][] Visted = new boolean[rows][cols];
 
     public finderMap(String input){
         //for each instance of "\n" in the input string, increment rows by 1
@@ -20,6 +21,8 @@ public class finderMap{
         cols = input.length() / rows;
         }
         maze = new char[rows][cols];
+        Visted = new boolean[rows][cols];
+
         for(int i = 0; i <= rows; i += cols){
             for(int j = 0; j <= cols; j++){
                 maze[i][j] = input.charAt(i*cols + j);
