@@ -44,19 +44,33 @@ public class finderMap{
     //returns whether a particular location is on a allowable pathway. 
     // That is you are eligible to “visit” or “walk on” this spot.
     public boolean getPath(int X, int Y){
-        return false;
+        return (maze[X][Y] != 'x'); //because any character other than x represents a walkable spot
     }
     //notes that a spot has been “visited” or
     //“walked on”. It should not allow you to visit a spot that is not on the pathway.
     public boolean getVisited(int X, int Y){
-        return false;
+        return Visted[X][Y];
     }
 
     public boolean setVisited(int X, int Y){
-        return false;
+        Visted[X][Y] = true;
+        return true;
     }
+
     //represents the current state of the maze including where you have/have not visited.
     public String getString(){
-        return "Hi";
+        String output = "";
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++){
+                if(Visted[i][j]){
+                    output += "V";
+                }
+                else{
+                    output += maze[i][j];
+                }
+            }
+            output += "\n";
+        }
+        return output;
     }
 }
