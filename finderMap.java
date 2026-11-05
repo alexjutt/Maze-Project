@@ -13,18 +13,22 @@ public class finderMap{
     public finderMap(String input){
         //for each instance of "\n" in the input string, increment rows by 1
         input = input.replace("\n", "N");
+        //System.out.println(input);
         for(int i = 0; i < input.length(); i++){
+            //System.out.println("for");
             if(input.charAt(i) == 'N'){
                 rows++;
+                //System.out.println(rows);
             }
+        }
         input = input.replace("N", "");
         cols = input.length() / rows;
-        }
+        //System.out.println(input);
         maze = new char[rows][cols];
         Visted = new boolean[rows][cols];
 
-        for(int i = 0; i <= rows; i += cols){
-            for(int j = 0; j <= cols; j++){
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
                 maze[i][j] = input.charAt(i*cols + j);
             }
         }
@@ -58,19 +62,23 @@ public class finderMap{
     }
 
     //represents the current state of the maze including where you have/have not visited.
-    public String getString(){
-        String output = "";
+    public void getString(){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < cols; j++){
                 if(Visted[i][j]){
-                    output += "V";
+                    System.out.print("V");
                 }
                 else{
-                    output += maze[i][j];
+                    System.out.print(maze[i][j]);
                 }
             }
-            output += "\n";
+            System.out.println();
         }
-        return output;
     }
+    public static void main(String args[]){
+        finderMap Dave= new finderMap("xxp\nppx\nxpp");
+        //System.out.println(rows + " " + cols);
+        Dave.getString();
 }
+}
+
