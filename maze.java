@@ -1,11 +1,21 @@
 public class maze{
-    //public static String[][] maze = new String[][]
+    public static String[][] maze == new String[][]
 
     //takes a String and stores the map into the
     //doubly-subscripted array that holds the map data. Remember that “\n” can be stored in
     //strings to designate the next line.
     public maze(String map){
         
+    }
+
+    public char[][] convert(String input){
+        int rows = 0;
+        int cols = 0;
+
+
+
+        char[][] paths = new char[rows][cols];
+        return paths;
     }
 
     //returns whether a particular location is on a allowable pathway. 
