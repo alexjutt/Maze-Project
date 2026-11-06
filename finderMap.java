@@ -100,26 +100,28 @@ public class finderMap{
         //else
         // return
 
+        System.out.println("visiting: " + x + ", " + y);
         setVisited(x, y);
         //check for adjacent '!' spot
-        if ((x > 0 && maze[x-1][y] == '!') || (x < rows-1 && maze[x+1][y] == '!') || (y > 0 && maze[x][y-1] == '!') || (y < cols-1 && maze[x][y+1] == '!')){
+        if ((x > 0 && maze[x-1][y] == '!') || (x < cols-1 && maze[x+1][y] == '!') || (y > 0 && maze[x][y-1] == '!') || (y < rows-1 && maze[x][y+1] == '!')){
             getString();
+            System.out.println("Maze solved!");
             return;
         }
         //checking left
-        if (x > 0 && maze[x-1][y] == 'p' && getVisited(x-1, y)) {
+        if (x > 0 && maze[x-1][y] == 'p' && !getVisited(x-1, y)) {
             recursiveFloodSolve(x-1, y);
         }
         //checking up
-        if (y > 0 && maze[x][y-1] == 'p' && getVisited(x, y-1)) {
+        if (y > 0 && maze[x][y-1] == 'p' && !getVisited(x, y-1)) {
             recursiveFloodSolve(x, y-1);
         }
         //checking right
-        if (x < rows-1 && maze[x+1][y] == 'p' && getVisited(x+1, y)) {
+        if (x < cols-1 && maze[x+1][y] == 'p' && !getVisited(x+1, y)) {
             recursiveFloodSolve(x+1, y);
         }
         //checking down
-        if (y < cols-1 && maze[x][y+1] == 'p' && getVisited(x, y+1)) {
+        if (y < rows-1 && maze[x][y+1] == 'p' && !getVisited(x, y+1)) {
             recursiveFloodSolve(x, y+1);
         }
         System.out.println("debugging ,last return statement");
