@@ -124,7 +124,7 @@ public class finderMap{
         if (y < rows-1 && maze[x][y+1] == 'p' && !getVisited(x, y+1)) {
             recursiveFloodSolve(x, y+1);
         }
-        System.out.println("debugging ,last return statement");
+        //System.out.println("debugging ,last return statement");
         return;
     }
 }
