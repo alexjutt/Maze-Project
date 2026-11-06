@@ -107,19 +107,19 @@ public class finderMap{
             return;
         }
         //checking left
-        if (x > 0 && maze[x-1][y] == 'p') {
+        if (x > 0 && maze[x-1][y] == 'p' && getVisited(x-1, y)) {
             recursiveFloodSolve(x-1, y);
         }
         //checking up
-        if (y > 0 && maze[x][y-1] == 'p') {
+        if (y > 0 && maze[x][y-1] == 'p' && getVisited(x, y-1)) {
             recursiveFloodSolve(x, y-1);
         }
         //checking right
-        if (x < rows-1 && maze[x+1][y] == 'p') {
+        if (x < rows-1 && maze[x+1][y] == 'p' && getVisited(x+1, y)) {
             recursiveFloodSolve(x+1, y);
         }
         //checking down
-        if (y < cols-1 && maze[x][y+1] == 'p') {
+        if (y < cols-1 && maze[x][y+1] == 'p' && getVisited(x, y+1)) {
             recursiveFloodSolve(x, y+1);
         }
         System.out.println("debugging ,last return statement");
