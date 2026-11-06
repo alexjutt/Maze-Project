@@ -76,9 +76,12 @@ public class finderMap{
         }
     }
     public static void main(String args[]){
-        finderMap Dave= new finderMap("xxp\nppx\nxpp");
-        //System.out.println(rows + " " + cols);
+        finderMap Dave= new finderMap("x!xxxxx\nxpxppp#\nxpppxxx\nxxxxxxx");
+        System.out.println("rows: " + rows + ", cols: " + cols);
+        System.out.println("maze: ");
         Dave.getString();
+        System.out.println("solving maze");
+        recursiveFloodSolve(1, 6);
 }
 
     //solving the maze using flood fill, as specified in goal set 2
