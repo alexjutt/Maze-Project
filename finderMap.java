@@ -10,6 +10,7 @@ public class finderMap{
     public static char[][] maze = new char[rows][cols];
     public static boolean[][] Visted = new boolean[rows][cols];
     public static boolean[][] DeadEnd = new boolean[rows][cols];
+    public static boolean isSolved = false;
 
     public finderMap(String input){
         //for each instance of "\n" in the input string, increment rows by 1
@@ -78,7 +79,7 @@ public class finderMap{
         }
     }
     public static void main(String args[]){
-        finderMap Dave= new finderMap("x!xxxxx\nxpxppp#\nppppxxx\nxxxxxxx");
+        finderMap Dave= new finderMap("x!xxxxx\nxpxppp#\nppppxxx\nppppppp");
         System.out.println("rows: " + rows + ", cols: " + cols);
         System.out.println("maze: ");
         Dave.getString();
@@ -101,37 +102,39 @@ public class finderMap{
         // then recursively call the function with the down index ✅
         //else ✅
         // return ✅
+        if (!isSolved){
+            System.out.println("visiting: " + x + ", " + y);
+            setVisited(x, y);
+            //check for adjacent '!' spot
+            if ((x > 0 && maze[x-1][y] == '!') || (x < cols-1 && maze[x+1][y] == '!') || (y > 0 && maze[x][y-1] == '!') || (y < rows-1 && maze[x][y+1] == '!')){
+                getString();
 
-        System.out.println("visiting: " + x + ", " + y);
-        setVisited(x, y);
-        //check for adjacent '!' spot
-        if ((x > 0 && maze[x-1][y] == '!') || (x < cols-1 && maze[x+1][y] == '!') || (y > 0 && maze[x][y-1] == '!') || (y < rows-1 && maze[x][y+1] == '!')){
-            getString();
-            System.out.println("Maze solved!");
+                System.out.println("Maze solved!");
+                isSolved = true;
+                return;
+            }
+            //checking left
+            if (x > 0 && maze[x-1][y] == 'p' && !getVisited(x-1, y) && !(DeadEnd[x-1][y])) {
+                recursiveFloodSolve(x-1, y);
+            }
+            //checking up
+            if (y > 0 && maze[x][y-1] == 'p' && !getVisited(x, y-1) && !(DeadEnd[x][y-1])) {
+                recursiveFloodSolve(x, y-1);
+            }
+            //checking right
+            if (x < cols-1 && maze[x+1][y] == 'p' && !getVisited(x+1, y) && !(DeadEnd[x+1][y])) {
+                recursiveFloodSolve(x+1, y);
+            }
+            //checking down
+            if (y < rows-1 && maze[x][y+1] == 'p' && !getVisited(x, y+1) && !(DeadEnd[x][y+1])) {
+                recursiveFloodSolve(x, y+1);
+            }
+            else{
+                Visted[x][y] = false;
+                DeadEnd[x][y] = true;
+            }
+            //System.out.println("debugging ,last return statement");
             return;
         }
-        //checking left
-        if (x > 0 && maze[x-1][y] == 'p' && !getVisited(x-1, y) && !(DeadEnd[x-1][y])) {
-            recursiveFloodSolve(x-1, y);
-        }
-        //checking up
-        if (y > 0 && maze[x][y-1] == 'p' && !getVisited(x, y-1) && !(DeadEnd[x][y-1])) {
-            recursiveFloodSolve(x, y-1);
-        }
-        //checking right
-        if (x < cols-1 && maze[x+1][y] == 'p' && !getVisited(x+1, y) && !(DeadEnd[x+1][y])) {
-            recursiveFloodSolve(x+1, y);
-        }
-        //checking down
-        if (y < rows-1 && maze[x][y+1] == 'p' && !getVisited(x, y+1) && !(DeadEnd[x][y+1])) {
-            recursiveFloodSolve(x, y+1);
-        }
-        else{
-            Visted[x][y] = false;
-            DeadEnd[x][y] = true;
-        }
-        //System.out.println("debugging ,last return statement");
-        return;
     }
 }
-
