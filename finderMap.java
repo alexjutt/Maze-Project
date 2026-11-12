@@ -123,6 +123,7 @@ public class finderMap{
             if (x > 0 && maze[x-1][y] == 'p' && !getVisited(x-1, y) && !(DeadEnd[x-1][y])) {
                 recursiveFloodSolve(x-1, y);
             }
+            //
             //checking up
             if (y > 0 && maze[x][y-1] == 'p' && !getVisited(x, y-1) && !(DeadEnd[x][y-1])) {
                 recursiveFloodSolve(x, y-1);
