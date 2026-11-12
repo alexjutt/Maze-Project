@@ -90,18 +90,6 @@ public class finderMap{
     //solving the maze using flood fill, as specified in goal set 2
     //int x and y are the coordinates where each recursive call references
     public static void recursiveFloodSolve(int x, int y){
-        //mark the current position with 'V' ✅
-        //if a bordering index contains '!', then the maze is solved; print the maze and return ✅
-        //else if there is a left index and it containts 'p': ✅
-        // then recursively call the function with the left index ✅
-        //else if there is an up index and it containts 'p': ✅
-        // then recursively call the function with the up index ✅ 
-        //else if there is a right index and it containts 'p'" ✅
-        // then recursively call the function with the right index ✅
-        //else if there is a down index and it containts 'p': ✅
-        // then recursively call the function with the down index ✅
-        //else ✅
-        // return ✅
         if (!isSolved){
             System.out.println("visiting: " + x + ", " + y);
             setVisited(x, y);
