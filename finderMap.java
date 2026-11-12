@@ -103,15 +103,15 @@ public class finderMap{
         System.out.println("maze: ");
         Dave.getString();
         System.out.println("solving maze");
-        recursiveFloodSolve(1, 6);
+        recursiveFloodSolve(1, 6, 1);
     }
 
     //solving the maze using flood fill, as specified in goal set 2
     //int x and y are the coordinates where each recursive call references
-    public static void recursiveFloodSolve(int x, int y){
+    public static void recursiveFloodSolve(int x, int y, int stepNum){
         if (!isSolved){
             System.out.println("visiting: " + x + ", " + y);
-            setVisited(x, y, weights[x][y]);
+            setVisited(x, y, stepNum);
             //check for adjacent '!' spot
             if ((x > 0 && maze[x-1][y] == '!') || (x < cols-1 && maze[x+1][y] == '!') || (y > 0 && maze[x][y-1] == '!') || (y < rows-1 && maze[x][y+1] == '!')){
                 getString();
@@ -122,20 +122,19 @@ public class finderMap{
             }
             //checking left
             if (x > 0 && maze[x-1][y] == 'p' && (getVisited(x-1, y) == 0) && !(DeadEnd[x-1][y])) {
-                setVisited(x-1, y, greatest number in Visited + 1);
-                recursiveFloodSolve(x-1, y);
+                recursiveFloodSolve(x-1, y, stepNum +1);
             }
             //checking up
             if (y > 0 && maze[x][y-1] == 'p' && (getVisited(x, y-1) == 0) && !(DeadEnd[x][y-1])) {
-                recursiveFloodSolve(x, y-1);
+                recursiveFloodSolve(x, y-1, stepNum +1);
             }
             //checking right
             if (x < cols-1 && maze[x+1][y] == 'p' && (getVisited(x+1, y) == 0) && !(DeadEnd[x+1][y])) {
-                recursiveFloodSolve(x+1, y);
+                recursiveFloodSolve(x+1, y, stepNum +1);
             }
             //checking down
             if (y < rows-1 && maze[x][y+1] == 'p' && (getVisited(x, y+1) == 0) && !(DeadEnd[x][y+1])) {
-                recursiveFloodSolve(x, y+1);
+                recursiveFloodSolve(x, y+1, stepNum +1);
             }
             else{
                 maze[x][y] = backupMaze[x][y];
