@@ -8,6 +8,7 @@ public class finderMap{
     public static int rows = 1; //fencepost problem, starts at 1 for counting
     public static int cols = 0;
     public static char[][] maze = new char[rows][cols]; //the maze
+    public static char[][] backupMaze = new char[rows][cols]; //copy of the original maze that can get referenced
     public static int[][] weights = new int[rows][cols]; //only the weights of each spot
     public static boolean[][] Visted = new boolean[rows][cols]; //whether each spot was visited
     public static boolean[][] DeadEnd = new boolean[rows][cols]; //whether each path spot leads to a dead end
@@ -39,7 +40,7 @@ public class finderMap{
             }
         }
 
-        //instatiating the weights
+        //initializing the weights
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
                 if(maze[i][j] >= '0' && maze[i][j] <= '9'){
@@ -96,7 +97,7 @@ public class finderMap{
         Dave.getString();
         System.out.println("solving maze");
         recursiveFloodSolve(1, 6);
-}
+    }
 
     //solving the maze using flood fill, as specified in goal set 2
     //int x and y are the coordinates where each recursive call references
