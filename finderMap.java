@@ -42,8 +42,14 @@ public class finderMap{
         //instatiating the weights
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
-                if(){
-                    weights[i][j] = 
+                if(maze[i][j] >= '0' && maze[i][j] <= '9'){
+                    weights[i][j] = //convert from hex
+                }
+                else if(maze[i][j] >= 'a' && maze[i][j] <='f'){
+
+                }
+                else if(maze[i][j] >= 'A' && maze[i][j] <= 'F'){
+                    
                 }
                 //  fill weights[i][j] with the int version of that number
             }
