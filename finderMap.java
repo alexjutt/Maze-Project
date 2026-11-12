@@ -38,17 +38,6 @@ public class finderMap{
         }
     }
 
-    //creates a char 2d array displaying all walkable spaces in the maze
-    public static char[][] convert(String input){
-        rows = 0;
-        cols = 0;
-
-
-
-        char[][] paths = new char[rows][cols];
-        return paths;
-    }
-
     //returns whether a particular location is on a allowable pathway. 
     // That is you are eligible to “visit” or “walk on” this spot.
     public static boolean getPath(int X, int Y){
