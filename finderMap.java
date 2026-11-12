@@ -43,13 +43,16 @@ public class finderMap{
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
                 if(maze[i][j] >= '0' && maze[i][j] <= '9'){
-                    weights[i][j] = //convert from hex
+                    weights[i][j] = maze[i][j] - 48;
+                    //System.out.println(weights[i][j]);
                 }
                 else if(maze[i][j] >= 'a' && maze[i][j] <='f'){
-
+                    weights[i][j] = maze[i][j] - 87;
+                    //System.out.println(weights[i][j]);
                 }
                 else if(maze[i][j] >= 'A' && maze[i][j] <= 'F'){
-                    
+                    weights[i][j] = maze[i][j] - 55;
+                    //System.out.println(weights[i][j]);
                 }
                 //  fill weights[i][j] with the int version of that number
             }
@@ -87,7 +90,7 @@ public class finderMap{
         }
     }
     public static void main(String args[]){
-        finderMap Dave= new finderMap("x!xxxxx\nxpxppp#\nppppxxx\nppppppp");
+        finderMap Dave= new finderMap("x!xxxxx\nx1x888#\nAabBxxx\nFfCcEeD");
         System.out.println("rows: " + rows + ", cols: " + cols);
         System.out.println("maze: ");
         Dave.getString();
