@@ -10,7 +10,7 @@ public class finderMap{
     public static char[][] maze = new char[rows][cols]; //the maze
     public static char[][] backupMaze = new char[rows][cols]; //copy of the original maze that can get referenced
     public static int[][] weights = new int[rows][cols]; //only the weights of each spot
-    public static boolean[][] Visted = new boolean[rows][cols]; //whether each spot was visited
+    public static int[][] Visted = new int[rows][cols]; //whether each spot was visited
     public static boolean[][] DeadEnd = new boolean[rows][cols]; //whether each path spot leads to a dead end
     public static boolean isSolved = false;
     public static int[][] steps = new int[rows][cols];
@@ -30,7 +30,8 @@ public class finderMap{
         cols = input.length() / rows;
         
         maze = new char[rows][cols];
-        Visted = new boolean[rows][cols];
+        backupMaze = new char[rows][cols];
+        Visted = new int[rows][cols];
         DeadEnd = new boolean[rows][cols];
         weights = new int[rows][cols];
 
@@ -38,6 +39,7 @@ public class finderMap{
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
                 maze[i][j] = input.charAt(i*cols + j);
+                backupMaze[i][j] = input.charAt(i*cols + j);
             }
         }
 
@@ -68,11 +70,14 @@ public class finderMap{
     }
     //notes that a spot has been “visited” or
     //“walked on”. It should not allow you to visit a spot that is not on the pathway.
-    public static boolean getVisited(int X, int Y){
+    public static int getVisited(int X, int Y){
         return Visted[X][Y];
     }
-
-    public static boolean setVisited(int X, int Y){
+    public static int getCost(int x, int y){
+        return weights[x][y]; 
+    }
+    //fix this method
+    public static boolean setVisited(int X, int Y, int visitNum){
         Visted[X][Y] = true;
         return true;
     }
@@ -105,7 +110,7 @@ public class finderMap{
     public static void recursiveFloodSolve(int x, int y){
         if (!isSolved){
             System.out.println("visiting: " + x + ", " + y);
-            setVisited(x, y);
+            setVisited(x, y, weights[x][y]);
             //check for adjacent '!' spot
             if ((x > 0 && maze[x-1][y] == '!') || (x < cols-1 && maze[x+1][y] == '!') || (y > 0 && maze[x][y-1] == '!') || (y < rows-1 && maze[x][y+1] == '!')){
                 getString();
@@ -131,7 +136,7 @@ public class finderMap{
                 recursiveFloodSolve(x, y+1);
             }
             else{
-                Visted[x][y] = false;
+                maze[x][y] = backupMaze[x][y];
                 DeadEnd[x][y] = true;
             }
             //System.out.println("debugging ,last return statement");
