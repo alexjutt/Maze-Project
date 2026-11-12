@@ -121,19 +121,20 @@ public class finderMap{
                 return;
             }
             //checking left
-            if (x > 0 && maze[x-1][y] == 'p' && !getVisited(x-1, y) && !(DeadEnd[x-1][y])) {
+            if (x > 0 && maze[x-1][y] == 'p' && (getVisited(x-1, y) == 0) && !(DeadEnd[x-1][y])) {
+                setVisited(x-1, y, greatest number in Visited + 1);
                 recursiveFloodSolve(x-1, y);
             }
             //checking up
-            if (y > 0 && maze[x][y-1] == 'p' && !getVisited(x, y-1) && !(DeadEnd[x][y-1])) {
+            if (y > 0 && maze[x][y-1] == 'p' && (getVisited(x, y-1) == 0) && !(DeadEnd[x][y-1])) {
                 recursiveFloodSolve(x, y-1);
             }
             //checking right
-            if (x < cols-1 && maze[x+1][y] == 'p' && !getVisited(x+1, y) && !(DeadEnd[x+1][y])) {
+            if (x < cols-1 && maze[x+1][y] == 'p' && (getVisited(x+1, y) == 0) && !(DeadEnd[x+1][y])) {
                 recursiveFloodSolve(x+1, y);
             }
             //checking down
-            if (y < rows-1 && maze[x][y+1] == 'p' && !getVisited(x, y+1) && !(DeadEnd[x][y+1])) {
+            if (y < rows-1 && maze[x][y+1] == 'p' && (getVisited(x, y+1) == 0) && !(DeadEnd[x][y+1])) {
                 recursiveFloodSolve(x, y+1);
             }
             else{
