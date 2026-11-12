@@ -24,16 +24,28 @@ public class finderMap{
                 //System.out.println(rows);
             }
         }
-        input = input.replace("N", "");
+        input = input.replace("N", ""); //cleaning up
         cols = input.length() / rows;
-        //System.out.println(input);
+        
         maze = new char[rows][cols];
         Visted = new boolean[rows][cols];
         DeadEnd = new boolean[rows][cols];
+        weights = new int[rows][cols];
 
+        //instatiating the maze
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
                 maze[i][j] = input.charAt(i*cols + j);
+            }
+        }
+
+        //instatiating the weights
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
+                if(){
+                    weights[i][j] = 
+                }
+                //  fill weights[i][j] with the int version of that number
             }
         }
     }
