@@ -87,15 +87,21 @@ public class finderMap{
     public static void getString(){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < cols; j++){
-                if(Visted[i][j] >= 0){
+                if(Visted[i][j] >  0){
                     System.out.print(getVisited(i,j));
                 }
+                else if(backupMaze[i][j] == '!'){
+                    System.out.print('!');
+                }
+                else if(backupMaze[i][j] == 'x'){
+                    System.out.print('x');
+                }
                 else{
-                    System.out.print(maze[i][j]);
+                    System.out.print('p');
                 }
             }
             System.out.println();
-        }
+        }      
     }
 
     public static void cleanMaze(){ //tidies up the maze for printing
