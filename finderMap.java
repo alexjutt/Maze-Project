@@ -37,6 +37,7 @@ public class finderMap{
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
                 maze[i][j] = input.charAt(i*cols + j);
+                backupMaze[i][j] = input.charAt(i*cols + j);
             }
         }
 
@@ -130,7 +131,7 @@ public class finderMap{
                 recursiveFloodSolve(x, y+1);
             }
             else{
-                Visted[x][y] = false;
+                maze[x][y] = backupMaze[x][y];
                 DeadEnd[x][y] = true;
             }
             //System.out.println("debugging ,last return statement");
