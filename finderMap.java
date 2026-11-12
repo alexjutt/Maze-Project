@@ -7,9 +7,10 @@ public class finderMap{
 
     public static int rows = 1; //fencepost problem, starts at 1 for counting
     public static int cols = 0;
-    public static char[][] maze = new char[rows][cols];
-    public static boolean[][] Visted = new boolean[rows][cols];
-    public static boolean[][] DeadEnd = new boolean[rows][cols];
+    public static char[][] maze = new char[rows][cols]; //the maze
+    public static int[][] weights = new int[rows][cols]; //only the weights of each spot
+    public static boolean[][] Visted = new boolean[rows][cols]; //whether each spot was visited
+    public static boolean[][] DeadEnd = new boolean[rows][cols]; //whether each path spot leads to a dead end
     public static boolean isSolved = false;
 
     public finderMap(String input){
