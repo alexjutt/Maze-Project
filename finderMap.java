@@ -13,6 +13,7 @@ public class finderMap{
     public static boolean[][] Visted = new boolean[rows][cols]; //whether each spot was visited
     public static boolean[][] DeadEnd = new boolean[rows][cols]; //whether each path spot leads to a dead end
     public static boolean isSolved = false;
+    public static int[][] steps = new int[rows][cols];
 
     public finderMap(String input){
         //for each instance of "\n" in the input string, increment rows by 1
