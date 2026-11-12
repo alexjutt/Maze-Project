@@ -112,25 +112,30 @@ public class finderMap{
         if (!isSolved){
             System.out.println("visiting: " + x + ", " + y);
             setVisited(x, y, weights[x][y]);
-            //check for adjacent '!' spot to finish the maze
-            if ((x > 0 && maze[x-1][y] == '!') || 
-            (x < cols-1 && maze[x+1][y] == '!') || 
-            (y > 0 && maze[x][y-1] == '!') || 
-            (y < rows-1 && maze[x][y+1] == '!')){
-                //getString();
+            //check for adjacent '!' spot
+            if ((x > 0 && maze[x-1][y] == '!') || (x < cols-1 && maze[x+1][y] == '!') || (y > 0 && maze[x][y-1] == '!') || (y < rows-1 && maze[x][y+1] == '!')){
+                getString();
+
                 System.out.println("Maze solved!");
                 isSolved = true;
                 return;
             }
-            //heuristic step
-            //1. travel to the adjacent spot with the lowest weight that isn't a dead end
-            if(x >0 && maze[x-1][y] != 'x' && !DeadEnd[x-1][y]){
-                lowestWeight = weights[x-1][y];
+            //checking left
+            if (x > 0 && maze[x-1][y] == 'p' && !getVisited(x-1, y) && !(DeadEnd[x-1][y])) {
+                recursiveFloodSolve(x-1, y);
             }
-            if(x >0 && maze[x-1][y] != 'x' && !DeadEnd[x-1][y]){
-                lowestWeight = weights[x-1][y];
+            //checking up
+            if (y > 0 && maze[x][y-1] == 'p' && !getVisited(x, y-1) && !(DeadEnd[x][y-1])) {
+                recursiveFloodSolve(x, y-1);
             }
-            //2. if the current spot has no adjacent spots that aren't dead ends or walls:
+            //checking right
+            if (x < cols-1 && maze[x+1][y] == 'p' && !getVisited(x+1, y) && !(DeadEnd[x+1][y])) {
+                recursiveFloodSolve(x+1, y);
+            }
+            //checking down
+            if (y < rows-1 && maze[x][y+1] == 'p' && !getVisited(x, y+1) && !(DeadEnd[x][y+1])) {
+                recursiveFloodSolve(x, y+1);
+            }
             else{
                 maze[x][y] = backupMaze[x][y];
                 DeadEnd[x][y] = true;
