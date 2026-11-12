@@ -97,6 +97,18 @@ public class finderMap{
             System.out.println();
         }
     }
+
+    public static void cleanMaze(){ //tidies up the maze for printing
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
+                if(backupMaze[i][j]=='x'){
+                    maze[i][j] = 'x';
+                }
+            }
+        }
+
+    }
+
     public static void main(String args[]){
         finderMap Dave= new finderMap("x!xxxxx\nx1x888#\nAabBxxx\nFfCcEeD");
         System.out.println("rows: " + rows + ", cols: " + cols);
@@ -113,7 +125,11 @@ public class finderMap{
             //System.out.println("visiting: " + x + ", " + y);
             setVisited(x, y, stepNum);
             //check for adjacent '!' spot
-            if ((x > 0 && maze[x-1][y] == '!') || (x < cols-1 && maze[x+1][y] == '!') || (y > 0 && maze[x][y-1] == '!') || (y < rows-1 && maze[x][y+1] == '!')){
+            if ((x > 0 && maze[x-1][y] == '!') || 
+            (x < cols-1 && maze[x+1][y] == '!') || 
+            (y > 0 && maze[x][y-1] == '!') || 
+            (y < rows-1 && maze[x][y+1] == '!')){
+                cleanMaze();
                 getString();
 
                 System.out.println("Maze solved!");
