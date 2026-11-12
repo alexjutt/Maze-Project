@@ -12,8 +12,8 @@ public class finderMap{
     public static int[][] weights = new int[rows][cols]; //only the weights of each spot
     public static int[][] Visted = new int[rows][cols]; //whether each spot was visited
     public static boolean[][] DeadEnd = new boolean[rows][cols]; //whether each path spot leads to a dead end
+    public static int weightSum = 0; //sum total of all steps taken so far
     public static boolean isSolved = false;
-    public static int[][] steps = new int[rows][cols];
 
     public finderMap(String input){
         //for each instance of "\n" in the input string, increment rows by 1
@@ -68,26 +68,27 @@ public class finderMap{
     public static boolean getPath(int X, int Y){
         return (maze[X][Y] != 'x'); //because any character other than x represents a walkable spot
     }
-    //notes that a spot has been “visited” or
-    //“walked on”. It should not allow you to visit a spot that is not on the pathway.
+
+    //return the step # of a spot
     public static int getVisited(int X, int Y){
         return Visted[X][Y];
     }
+
     public static int getCost(int x, int y){
         return weights[x][y]; 
     }
-    //fix this method
-    public static boolean setVisited(int X, int Y, int visitNum){
-        Visted[X][Y] = true;
-        return true;
+    //sets the step #
+    public static int setVisited(int X, int Y, int visitNum){
+        Visted[X][Y] = visitNum;
+        return visitNum;
     }
 
     //represents the current state of the maze including where you have/have not visited.
     public static void getString(){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < cols; j++){
-                if(Visted[i][j]){
-                    System.out.print("V");
+                if(Visted[i][j] >= -1){
+                    System.out.print(getVisited(i,j));
                 }
                 else{
                     System.out.print(maze[i][j]);
@@ -111,31 +112,25 @@ public class finderMap{
         if (!isSolved){
             System.out.println("visiting: " + x + ", " + y);
             setVisited(x, y, weights[x][y]);
-            //check for adjacent '!' spot
-            if ((x > 0 && maze[x-1][y] == '!') || (x < cols-1 && maze[x+1][y] == '!') || (y > 0 && maze[x][y-1] == '!') || (y < rows-1 && maze[x][y+1] == '!')){
-                getString();
-
+            //check for adjacent '!' spot to finish the maze
+            if ((x > 0 && maze[x-1][y] == '!') || 
+            (x < cols-1 && maze[x+1][y] == '!') || 
+            (y > 0 && maze[x][y-1] == '!') || 
+            (y < rows-1 && maze[x][y+1] == '!')){
+                //getString();
                 System.out.println("Maze solved!");
                 isSolved = true;
                 return;
             }
-            //checking left
-            if (x > 0 && maze[x-1][y] == 'p' && !getVisited(x-1, y) && !(DeadEnd[x-1][y])) {
-                recursiveFloodSolve(x-1, y);
+            //heuristic step
+            //1. travel to the adjacent spot with the lowest weight that isn't a dead end
+            if(x >0 && maze[x-1][y] != 'x' && !DeadEnd[x-1][y]){
+                lowestWeight = weights[x-1][y];
             }
-            //
-            //checking up
-            if (y > 0 && maze[x][y-1] == 'p' && !getVisited(x, y-1) && !(DeadEnd[x][y-1])) {
-                recursiveFloodSolve(x, y-1);
+            if(x >0 && maze[x-1][y] != 'x' && !DeadEnd[x-1][y]){
+                lowestWeight = weights[x-1][y];
             }
-            //checking right
-            if (x < cols-1 && maze[x+1][y] == 'p' && !getVisited(x+1, y) && !(DeadEnd[x+1][y])) {
-                recursiveFloodSolve(x+1, y);
-            }
-            //checking down
-            if (y < rows-1 && maze[x][y+1] == 'p' && !getVisited(x, y+1) && !(DeadEnd[x][y+1])) {
-                recursiveFloodSolve(x, y+1);
-            }
+            //2. if the current spot has no adjacent spots that aren't dead ends or walls:
             else{
                 maze[x][y] = backupMaze[x][y];
                 DeadEnd[x][y] = true;
