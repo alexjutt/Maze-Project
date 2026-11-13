@@ -165,7 +165,7 @@ public class finderMap{
             (y > 0 && maze[x][y-1] == '!') || 
             (y < rows-1 && maze[x][y+1] == '!')){
                 cleanMaze();
-                routes.add(new completeRoute(makeSolution())); //storing the next completed route
+                routes.add(new completeRoute(-1 ,makeSolution())); //storing the next completed route
                 printString();
 
                 System.out.println("Maze solved!");
