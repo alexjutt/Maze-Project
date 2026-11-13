@@ -148,7 +148,7 @@ public class finderMap{
         finderMap Dave= new finderMap("x!xxxxx\nx1x888#\nAabBxxx\nFfCcEeD");
         System.out.println("rows: " + rows + ", cols: " + cols);
         System.out.println("maze: ");
-        Dave.makeSolution();
+        Dave.printString();
         System.out.println("solving maze");
         recursiveFloodSolve(1, 6, 1);
     }
