@@ -17,6 +17,7 @@ public class finderMap{
     public static int weightSum = 0; //sum total of all steps taken so far
     public static boolean isSolved = false;
     public static ArrayList<completeRoute> routes = new ArrayList(); //we're gonna add on more routes each completion
+    public int totalWeight = 0;
 
     public finderMap(String input){
         //for each instance of "\n" in the input string, increment rows by 1
@@ -165,7 +166,7 @@ public class finderMap{
             (y > 0 && maze[x][y-1] == '!') || 
             (y < rows-1 && maze[x][y+1] == '!')){
                 cleanMaze();
-                routes.add(new completeRoute(stepNum, makeSolution()));
+                routes.add(new completeRoute(makeSolution())); //storing the next completed route
                 printString();
 
                 System.out.println("Maze solved!");
