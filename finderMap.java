@@ -86,8 +86,34 @@ public class finderMap{
         return visitNum;
     }
 
-    //represents the current state of the maze including where you have/have not visited.
-    public static void getString(){
+    //represents the current state of the maze including where you have/have not visited. 
+    
+    // TODO: make another maze object to pass into a completeRoute object
+    public static int[][] makeSolution(){
+        int[][] solution = new int[rows][cols];
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++){
+                if(Visted[i][j] >  0){
+                    //System.out.print(getVisited(i,j));
+                    solution[i][j] = getVisited(i,j);
+                }
+                else if(backupMaze[i][j] == '!'){
+                    //System.out.print('!');
+                }
+                else if(backupMaze[i][j] == 'x'){
+                    //System.out.print('x');
+                    solution[i][j] = -1;
+                }
+                else{
+                    //System.out.print('p');
+                }
+            }
+            //System.out.println();
+        }   
+        return solution;   
+    }
+
+        public static void printString(){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < cols; j++){
                 if(Visted[i][j] >  0){
@@ -122,7 +148,7 @@ public class finderMap{
         finderMap Dave= new finderMap("x!xxxxx\nx1x888#\nAabBxxx\nFfCcEeD");
         System.out.println("rows: " + rows + ", cols: " + cols);
         System.out.println("maze: ");
-        Dave.getString();
+        Dave.makeSolution();
         System.out.println("solving maze");
         recursiveFloodSolve(1, 6, 1);
     }
@@ -139,7 +165,8 @@ public class finderMap{
             (y > 0 && maze[x][y-1] == '!') || 
             (y < rows-1 && maze[x][y+1] == '!')){
                 cleanMaze();
-                getString();
+                routes.add(new completeRoute(stepNum, makeSolution()));
+                printString();
 
                 System.out.println("Maze solved!");
                 isSolved = true;
