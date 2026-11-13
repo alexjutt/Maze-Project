@@ -9,4 +9,15 @@ public class completeRoute {
         }
         tWeight = totalWeight;
     }
+
+    public static void toString(completeRoute a){
+
+    }
+
+    public static int get_tWeight(completeRoute a){
+        return a.tWeight;
+    }
+    public static int[][] get_path(completeRoute a){
+        return a.path;
+    }
 }

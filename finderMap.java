@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import javax.swing.plaf.ViewportUI;
+
 public class finderMap{
     //public static String[][] maze == new String[][];
 
@@ -167,6 +169,7 @@ public class finderMap{
                 cleanMaze();
                 routes.add(new completeRoute(sumTotalWeights() ,makeSolution())); //storing the next completed route
                 printString();
+                System.out.println(routes.get(0).tWeight);
                 totalWeight = 0; //resetting for the next path
                 System.out.println("Maze solved!");
                 isSolved = true;
@@ -201,7 +204,9 @@ public class finderMap{
         totalWeight = 0;
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
-                totalWeight += weights[i][j];
+                if(Visted[i][j] > 0){
+                    totalWeight += weights[i][j];
+                }
             }
         }
         return totalWeight;
