@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class finderMap{
     //public static String[][] maze == new String[][];
 
@@ -14,6 +16,7 @@ public class finderMap{
     public static boolean[][] DeadEnd = new boolean[rows][cols]; //whether each path spot leads to a dead end
     public static int weightSum = 0; //sum total of all steps taken so far
     public static boolean isSolved = false;
+    public static ArrayList<completeRoute> routes = new ArrayList(); //we're gonna add on more routes each completion
 
     public finderMap(String input){
         //for each instance of "\n" in the input string, increment rows by 1
