@@ -89,7 +89,6 @@ public class finderMap{
 
     //represents the current state of the maze including where you have/have not visited. 
     
-    // TODO: make another maze object to pass into a completeRoute object
     public static int[][] makeSolution(){
         int[][] solution = new int[rows][cols];
         for (int i = 0; i < rows; i++){
