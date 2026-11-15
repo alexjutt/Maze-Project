@@ -171,23 +171,36 @@ public class finderMap{
                 totalWeight = 0; //resetting for the next path
     
                 System.out.println("Maze solved " + routes.size() + " times");
-                //isSolved = true;
-                return;
+                
+                //resetting visited
+                for(int i = 0; i < Visted.length; i++){
+                    for(int j = 0; j < Visted[i].length; j++){
+                        Visted[i][j] = 0;
+                    }
+                }
+                //resetting stepnum
+                stepNum = 0;
+
+                recursiveFloodSolve(findHashtag()[0],findHashtag()[1],1);
             }
             //checking left
-            if (x > 0 && maze[x-1][y] != 'x' && (getVisited(x-1, y) == 0) && !(DeadEnd[x-1][y])) {
+            if (x > 0 && maze[x-1][y] != 'x' && (getVisited(x-1, y) == 0) 
+                && !(DeadEnd[x-1][y]) && anyRouteHasValueAt(x-1,y,stepNum+1)) {
                 recursiveFloodSolve(x-1, y, stepNum +1);
             }
             //checking up
-            if (y > 0 && maze[x][y-1] != 'x' && (getVisited(x, y-1) == 0) && !(DeadEnd[x][y-1])) {
+            if (y > 0 && maze[x][y-1] != 'x' && (getVisited(x, y-1) == 0) 
+                && !(DeadEnd[x][y-1])) {
                 recursiveFloodSolve(x, y-1, stepNum +1);
             }
             //checking right
-            if (x < cols-1 && maze[x+1][y] != 'x' && (getVisited(x+1, y) == 0) && !(DeadEnd[x+1][y])) {
+            if (x < cols-1 && maze[x+1][y] != 'x' && (getVisited(x+1, y) == 0) 
+                && !(DeadEnd[x+1][y])) {
                 recursiveFloodSolve(x+1, y, stepNum +1);
             }
             //checking down
-            if (y < rows-1 && maze[x][y+1] != 'x' && (getVisited(x, y+1) == 0) && !(DeadEnd[x][y+1])) {
+            if (y < rows-1 && maze[x][y+1] != 'x' && (getVisited(x, y+1) == 0) 
+                && !(DeadEnd[x][y+1])) {
                 recursiveFloodSolve(x, y+1, stepNum +1);
             }
             else{
@@ -209,5 +222,30 @@ public class finderMap{
             }
         }
         return totalWeight;
+    }
+
+    public static int[] findHashtag(){
+        for(int i = 0; i < backupMaze.length; i++){
+            for(int j = 0; j < backupMaze[i].length; j++){
+                if(backupMaze[i][j] == '#'){
+                    return new int[]{i, j};
+                }
+            }
+        }
+        System.out.println("findHashtag() error");
+        return new int[]{-1,-1};
+    }
+
+    public static boolean anyRouteHasValueAt(int row, int col, int value){
+        if(row < 0 || row >= rows || col < 0 || col >= cols){
+            throw new IndexOutOfBoundsException("Coordinates are outside the maze");
+        }
+
+        for(completeRoute route : routes){
+            if(route.path[row][col] == value){
+                return true;
+            }
+        }
+        return false;
     }
 }
