@@ -16,7 +16,7 @@ public class finderMap{
     public static boolean[][] DeadEnd = new boolean[rows][cols]; //whether each path spot leads to a dead end
     public static int weightSum = 0; //sum total of all steps taken so far
     public static boolean isSolved = false;
-    public static ArrayList<completeRoute> routes = new ArrayList(); //we're gonna add on more routes each completion
+    public static ArrayList<completeRoute> routes = new ArrayList<>(); //we're gonna add on more routes each completion
     public static int totalWeight = 0;
 
     public finderMap(String input){
@@ -166,8 +166,8 @@ public class finderMap{
             (y < rows-1 && maze[x][y+1] == '!')){
                 cleanMaze();
                 routes.add(new completeRoute(sumTotalWeights() ,makeSolution())); //storing the next completed route
-                printString();
-                System.out.println(routes.get(0).tWeight);
+                //printString();
+                System.out.println(routes.get(0).tWeight + " total weight");
                 totalWeight = 0; //resetting for the next path
                 System.out.println("Maze solved!");
                 isSolved = true;
