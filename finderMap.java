@@ -89,23 +89,24 @@ public class finderMap{
 
     //represents the current state of the maze including where you have/have not visited. 
     
-    public static int[][] makeSolution(){
-        int[][] solution = new int[rows][cols];
+    public static char[][] makeSolution(){
+        char[][] solution = new char[rows][cols];
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < cols; j++){
-                if(Visted[i][j] >  0){
-                    //System.out.print(getVisited(i,j));
-                    solution[i][j] = getVisited(i,j);
+                if(backupMaze[i][j] == '!'){
+                    solution[i][j] = '!';
                 }
-                else if(backupMaze[i][j] == '!'){
-                    //System.out.print('!');
+                else if(Visted[i][j] >  0){
+                    //System.out.print(getVisited(i,j));
+                    solution[i][j] = toHexDigit(getVisited(i,j));
                 }
                 else if(backupMaze[i][j] == 'x'){
                     //System.out.print('x');
-                    solution[i][j] = -1;
+                    solution[i][j] = 'x';
                 }
                 else{
                     //System.out.print('p');
+                    solution[i][j] = '0';
                 }
             }
             //System.out.println();
@@ -126,7 +127,7 @@ public class finderMap{
                     System.out.print('x');
                 }
                 else{
-                    System.out.print('p');
+                    System.out.print(Integer.toHexString(weights[i][j]));
                 }
             }
             System.out.println();
@@ -161,9 +162,9 @@ public class finderMap{
             setVisited(x, y, stepNum);
             //check for adjacent '!' spot
             if ((x > 0 && maze[x-1][y] == '!') || 
-            (x < cols-1 && maze[x+1][y] == '!') || 
+            (x < rows-1 && maze[x+1][y] == '!') || 
             (y > 0 && maze[x][y-1] == '!') || 
-            (y < rows-1 && maze[x][y+1] == '!')){
+            (y < cols-1 && maze[x][y+1] == '!')){
                 cleanMaze();
                 routes.add(new completeRoute(sumTotalWeights() ,makeSolution())); //storing the next completed route
                 //printString();
@@ -171,6 +172,34 @@ public class finderMap{
                 totalWeight = 0; //resetting for the next path
     
                 System.out.println("Maze solved " + routes.size() + " times");
+
+                boolean allRequiredCellsCovered = true;
+                for(int i = 0; i < rows && allRequiredCellsCovered; i++){
+                    for(int j = 0; j < cols; j++){
+                        if(backupMaze[i][j] != '!' && backupMaze[i][j] != '#'
+                            && backupMaze[i][j] != 'x' && !DeadEnd[i][j]){
+                            boolean coveredByRoute = false;
+                            for(completeRoute route : routes){
+                                if(Character.digit(route.path[i][j], 16) > 0){
+                                    coveredByRoute = true;
+                                    break;
+                                }
+                            }
+                            if(!coveredByRoute){
+                                allRequiredCellsCovered = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(allRequiredCellsCovered){
+                    isSolved = true;
+                    System.out.println("All eligible maze cells are covered by saved routes.");
+                    for(completeRoute i : routes){
+                        System.out.println(i.toString());
+                    }
+                    return;
+                }
                 
                 //resetting visited
                 for(int i = 0; i < Visted.length; i++){
@@ -183,25 +212,32 @@ public class finderMap{
 
                 recursiveFloodSolve(findHashtag()[0],findHashtag()[1],1);
             }
-            //checking left
-            if (x > 0 && maze[x-1][y] != 'x' && (getVisited(x-1, y) == 0) 
-                && !(DeadEnd[x-1][y]) && anyRouteHasValueAt(x-1,y,stepNum+1)) {
-                recursiveFloodSolve(x-1, y, stepNum +1);
+            boolean canLeft = (x > 0 && maze[x-1][y] != 'x'
+                && getVisited(x-1, y) == 0 && !DeadEnd[x-1][y]);
+            boolean canUp = (y > 0 && maze[x][y-1] != 'x'
+                && getVisited(x, y-1) == 0 && !DeadEnd[x][y-1]);
+            boolean canRight = (x < rows-1 && maze[x+1][y] != 'x'
+                && getVisited(x+1, y) == 0 && !DeadEnd[x+1][y]);
+            boolean canDown = (y < cols-1 && maze[x][y+1] != 'x'
+                && getVisited(x, y+1) == 0 && !DeadEnd[x][y+1]);
+
+            boolean leftIsNew = (canLeft && !anyRouteHasValueAt(x-1, y, stepNum+1));
+            boolean upIsNew = (canUp && !anyRouteHasValueAt(x, y-1, stepNum+1));
+            boolean rightIsNew = (canRight && !anyRouteHasValueAt(x+1, y, stepNum+1));
+            boolean downIsNew = (canDown && !anyRouteHasValueAt(x, y+1, stepNum+1));
+            boolean hasNewSpot = (leftIsNew || upIsNew || rightIsNew || downIsNew);
+
+            if (hasNewSpot) {
+                if (leftIsNew) recursiveFloodSolve(x-1, y, stepNum+1);
+                if (upIsNew) recursiveFloodSolve(x, y-1, stepNum+1);
+                if (rightIsNew) recursiveFloodSolve(x+1, y, stepNum+1);
+                if (downIsNew) recursiveFloodSolve(x, y+1, stepNum+1);
             }
-            //checking up
-            if (y > 0 && maze[x][y-1] != 'x' && (getVisited(x, y-1) == 0) 
-                && !(DeadEnd[x][y-1])) {
-                recursiveFloodSolve(x, y-1, stepNum +1);
-            }
-            //checking right
-            if (x < cols-1 && maze[x+1][y] != 'x' && (getVisited(x+1, y) == 0) 
-                && !(DeadEnd[x+1][y])) {
-                recursiveFloodSolve(x+1, y, stepNum +1);
-            }
-            //checking down
-            if (y < rows-1 && maze[x][y+1] != 'x' && (getVisited(x, y+1) == 0) 
-                && !(DeadEnd[x][y+1])) {
-                recursiveFloodSolve(x, y+1, stepNum +1);
+            else if (canLeft || canUp || canRight || canDown) {
+                if (canLeft) recursiveFloodSolve(x-1, y, stepNum+1);
+                if (canUp) recursiveFloodSolve(x, y-1, stepNum+1);
+                if (canRight) recursiveFloodSolve(x+1, y, stepNum+1);
+                if (canDown) recursiveFloodSolve(x, y+1, stepNum+1);
             }
             else{
                 maze[x][y] = backupMaze[x][y];
@@ -241,11 +277,19 @@ public class finderMap{
             throw new IndexOutOfBoundsException("Coordinates are outside the maze");
         }
 
+        char hexValue = toHexDigit(value);
         for(completeRoute route : routes){
-            if(route.path[row][col] == value){
+            if(route.path[row][col] == hexValue){
                 return true;
             }
         }
         return false;
+    }
+
+    private static char toHexDigit(int value){
+        if(value < 0 || value > 15){
+            throw new IllegalArgumentException("Path values must be between 0 and 15");
+        }
+        return Character.forDigit(value, 16);
     }
 }
