@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import javax.swing.plaf.ViewportUI;
-
 public class finderMap{
     //public static String[][] maze == new String[][];
 
