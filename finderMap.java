@@ -169,8 +169,9 @@ public class finderMap{
                 //printString();
                 System.out.println(routes.get(0).tWeight + " total weight");
                 totalWeight = 0; //resetting for the next path
-                System.out.println("Maze solved!");
-                isSolved = true;
+    
+                System.out.println("Maze solved " + routes.size() + " times");
+                //isSolved = true;
                 return;
             }
             //checking left
