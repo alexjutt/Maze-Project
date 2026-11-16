@@ -15,7 +15,6 @@ public class finderMap{
     public static int[][] weights = new int[rows][cols]; //only the weights of each spot
     public static int[][] Visted = new int[rows][cols]; //whether each spot was visited
     public static boolean[][] DeadEnd = new boolean[rows][cols]; //whether each path spot leads to a dead end
-    public static int weightSum = 0; //sum total of all steps taken so far
     public static boolean isSolved = false;
     public static ArrayList<completeRoute> routes = new ArrayList<>(); //we're gonna add on more routes each completion
     public static int totalWeight = 0;
@@ -97,6 +96,9 @@ public class finderMap{
                 if(backupMaze[i][j] == '!'){
                     solution[i][j] = '!';
                 }
+                //else if(DeadEnd[i][j]){
+                  //  solution[i][j] = 'D'; //testing this
+               // }
                 else if(Visted[i][j] >  0){
                     //System.out.print(getVisited(i,j));
                     solution[i][j] = toHexDigit(getVisited(i,j));
@@ -146,7 +148,7 @@ public class finderMap{
 
     }
 
-    public static void main(String args[]){
+    public static void \String args[]){
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter a maze: ");
         String m1 = sc.next();
@@ -259,10 +261,12 @@ public class finderMap{
                 }
                 if (canDown){
                     recursiveFloodSolve(x, y+1, stepNum+1);
+                }
             }
             else{
                 maze[x][y] = backupMaze[x][y];
                 DeadEnd[x][y] = true;
+                stepNum -= 1;
             }
             //System.out.println("debugging ,last return statement");
             return;
@@ -273,7 +277,7 @@ public class finderMap{
         totalWeight = 0;
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
-                if(Visted[i][j] > 0){
+                if(Visted[i][j] > 0 && !DeadEnd[i][j]){
                     totalWeight += weights[i][j];
                 }
             }
