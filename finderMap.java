@@ -14,9 +14,6 @@ public class finderMap{
     public static char[][] backupMaze = new char[rows][cols]; //copy of the original maze that can get referenced
     public static int[][] weights = new int[rows][cols]; //only the weights of each spot
     public static int[][] Visted = new int[rows][cols]; //whether each spot was visited
-    public static boolean[][] DeadEnd = new boolean[rows][cols]; //whether each path spot leads to a dead end
-    public static int weightSum = 0; //sum total of all steps taken so far
-    public static boolean isSolved = false;
     public static ArrayList<completeRoute> routes = new ArrayList<>(); //we're gonna add on more routes each completion
     public static int totalWeight = 0;
 
@@ -37,7 +34,6 @@ public class finderMap{
         maze = new char[rows][cols];
         backupMaze = new char[rows][cols];
         Visted = new int[rows][cols];
-        DeadEnd = new boolean[rows][cols];
         weights = new int[rows][cols];
 
         //instatiating the maze
@@ -208,7 +204,7 @@ public class finderMap{
         removeDuplicatePaths();
         
 
-        System.out.println("\n=== All paths found ===");
+        System.out.println("\nAll paths found");
         System.out.println("Total paths: " + routes.size());
         for(int i = 0; i < routes.size(); i++){
             System.out.println("\nPath " + (i+1) + " (weight: " + routes.get(i).tWeight + "):");
