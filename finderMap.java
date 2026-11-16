@@ -1,4 +1,5 @@
 import java.util.Scanner;
+
 public class finderMap{
     //public static String[][] maze == new String[][];
 
@@ -10,6 +11,8 @@ public class finderMap{
     public static int cols = 0;
     public static char[][] maze = new char[rows][cols];
     public static boolean[][] Visted = new boolean[rows][cols];
+    public static boolean[][] DeadEnd = new boolean[rows][cols];
+    public static boolean isSolved = false;
 
     public finderMap(String input){
         //for each instance of "\n" in the input string, increment rows by 1
@@ -27,6 +30,7 @@ public class finderMap{
         //System.out.println(input);
         maze = new char[rows][cols];
         Visted = new boolean[rows][cols];
+        DeadEnd = new boolean[rows][cols];
 
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
@@ -36,7 +40,7 @@ public class finderMap{
     }
 
     //creates a char 2d array displaying all walkable spaces in the maze
-    public char[][] convert(String input){
+    public static char[][] convert(String input){
         rows = 0;
         cols = 0;
 
@@ -48,22 +52,22 @@ public class finderMap{
 
     //returns whether a particular location is on a allowable pathway. 
     // That is you are eligible to “visit” or “walk on” this spot.
-    public boolean getPath(int X, int Y){
+    public static boolean getPath(int X, int Y){
         return (maze[X][Y] != 'x'); //because any character other than x represents a walkable spot
     }
     //notes that a spot has been “visited” or
     //“walked on”. It should not allow you to visit a spot that is not on the pathway.
-    public boolean getVisited(int X, int Y){
+    public static boolean getVisited(int X, int Y){
         return Visted[X][Y];
     }
 
-    public boolean setVisited(int X, int Y){
+    public static boolean setVisited(int X, int Y){
         Visted[X][Y] = true;
         return true;
     }
 
     //represents the current state of the maze including where you have/have not visited.
-    public void getString(){
+    public static void getString(){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < cols; j++){
                 if(Visted[i][j]){
@@ -80,7 +84,61 @@ public class finderMap{
         System.out.println("Enter a Maze: ");
         Scanner scanner = new Scanner(System.in);
         finderMap Dave= new finderMap(scanner.nextLine());
-        //System.out.println(rows + " " + cols);
+        //System.out.println("rows: " + rows + ", cols: " + cols);
+        System.out.println("maze: ");
         Dave.getString();
+        System.out.println("solving maze");
+        recursiveFloodSolve(1, 6);
 }
+
+    //solving the maze using flood fill, as specified in goal set 2
+    //int x and y are the coordinates where each recursive call references
+    public static void recursiveFloodSolve(int x, int y){
+        //mark the current position with 'V' ✅
+        //if a bordering index contains '!', then the maze is solved; print the maze and return ✅
+        //else if there is a left index and it containts 'p': ✅
+        // then recursively call the function with the left index ✅
+        //else if there is an up index and it containts 'p': ✅
+        // then recursively call the function with the up index ✅ 
+        //else if there is a right index and it containts 'p'" ✅
+        // then recursively call the function with the right index ✅
+        //else if there is a down index and it containts 'p': ✅
+        // then recursively call the function with the down index ✅
+        //else ✅
+        // return ✅
+        if (!isSolved){
+            //System.out.println("visiting: " + x + ", " + y);
+            setVisited(x, y);
+            //check for adjacent '!' spot
+            if ((x > 0 && maze[x-1][y] == '!') || (x < cols-1 && maze[x+1][y] == '!') || (y > 0 && maze[x][y-1] == '!') || (y < rows-1 && maze[x][y+1] == '!')){
+                getString();
+
+                System.out.println("Maze solved!");
+                isSolved = true;
+                return;
+            }
+            //checking left
+            if (x > 0 && maze[x-1][y] == 'p' && !getVisited(x-1, y) && !(DeadEnd[x-1][y])) {
+                recursiveFloodSolve(x-1, y);
+            }
+            //checking up
+            if (y > 0 && maze[x][y-1] == 'p' && !getVisited(x, y-1) && !(DeadEnd[x][y-1])) {
+                recursiveFloodSolve(x, y-1);
+            }
+            //checking right
+            if (x < cols-1 && maze[x+1][y] == 'p' && !getVisited(x+1, y) && !(DeadEnd[x+1][y])) {
+                recursiveFloodSolve(x+1, y);
+            }
+            //checking down
+            if (y < rows-1 && maze[x][y+1] == 'p' && !getVisited(x, y+1) && !(DeadEnd[x][y+1])) {
+                recursiveFloodSolve(x, y+1);
+            }
+            else{
+                Visted[x][y] = false;
+                DeadEnd[x][y] = true;
+            }
+            //System.out.println("debugging ,last return statement");
+            return;
+        }
+    }
 }
