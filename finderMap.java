@@ -173,7 +173,7 @@ public class finderMap{
                 cleanMaze();
                 routes.add(new completeRoute(sumTotalWeights() ,makeSolution())); //storing the next completed route
                 //printString();
-                System.out.println(routes.get(0).tWeight + " total weight");
+                //System.out.println(routes.get(0).tWeight + " total weight");
                 totalWeight = 0; //resetting for the next path
     
                 System.out.println("Maze solved " + routes.size() + " times");
