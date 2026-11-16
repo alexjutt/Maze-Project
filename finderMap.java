@@ -234,16 +234,32 @@ public class finderMap{
             boolean hasNewSpot = (leftIsNew || upIsNew || rightIsNew || downIsNew);
 
             if (hasNewSpot) {
-                if (leftIsNew) recursiveFloodSolve(x-1, y, stepNum+1);
-                if (upIsNew) recursiveFloodSolve(x, y-1, stepNum+1);
-                if (rightIsNew) recursiveFloodSolve(x+1, y, stepNum+1);
-                if (downIsNew) recursiveFloodSolve(x, y+1, stepNum+1);
+                if (leftIsNew){
+                    recursiveFloodSolve(x-1, y, stepNum+1);
+                }
+                if (upIsNew){ 
+                    recursiveFloodSolve(x, y-1, stepNum+1);
+                }
+                if (rightIsNew){ 
+                    recursiveFloodSolve(x+1, y, stepNum+1);
+                }
+                if (downIsNew){ 
+                    recursiveFloodSolve(x, y+1, stepNum+1);
+                }
             }
             else if (canLeft || canUp || canRight || canDown) {
-                if (canLeft) recursiveFloodSolve(x-1, y, stepNum+1);
-                if (canUp) recursiveFloodSolve(x, y-1, stepNum+1);
-                if (canRight) recursiveFloodSolve(x+1, y, stepNum+1);
-                if (canDown) recursiveFloodSolve(x, y+1, stepNum+1);
+                if (canLeft){
+                    recursiveFloodSolve(x-1, y, stepNum+1);
+                }
+                if (canUp){
+                    recursiveFloodSolve(x, y-1, stepNum+1);
+                }
+                if (canRight){
+                    recursiveFloodSolve(x+1, y, stepNum+1);
+                }
+                if (canDown){
+                    recursiveFloodSolve(x, y+1, stepNum+1);
+                }
             }
             else{
                 maze[x][y] = backupMaze[x][y];
