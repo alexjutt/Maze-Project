@@ -28,7 +28,7 @@ public class MazeApp extends Application {
        //outputting the spaces from the lowest weight solution path 
         for(int i = 0; i < newMap.routes.get(indexOfLowest).path.length; i++){
             for(int j = 0 ; j < newMap.routes.get(indexOfLowest).path[i].length; j++){
-                grid.add(new Label("Item 1"), i, j);
+                grid.add(new Label(newMap.routes.get(indexOfLowest).path[i][j] + ""), j, i);
             }
 
         }

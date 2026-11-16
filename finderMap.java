@@ -150,6 +150,7 @@ public class finderMap{
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter a maze: ");
         String m1 = sc.next();
+        m1 = m1.replace("\\n", "\n");
         //finderMap Dave= new finderMap("x!xxxxx\nx1x888#\nAabBxxx\nFfCcEeD");
         finderMap Dave= new finderMap(m1);
         System.out.println("rows: " + rows + ", cols: " + cols);
