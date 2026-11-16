@@ -19,7 +19,7 @@ public class finderMap{
 
     public finderMap(String input){
         //for each instance of "\n" in the input string, increment rows by 1
-        input = input.replace("\n", "N");
+        input = input.replace("\\n", "N");
         //System.out.println(input);
         for(int i = 0; i < input.length(); i++){
             //System.out.println("for");
@@ -118,8 +118,10 @@ public class finderMap{
     }
 
     public static void main(String args[]){
-        finderMap Dave= new finderMap("x!xxxxx\nx1x888#\nAabBxxx\nFfCcEeD");
-        System.out.println("rows: " + rows + ", cols: " + cols);
+        System.out.println("Enter a Maze: ");
+        Scanner scanner = new Scanner(System.in);
+        finderMap Dave= new finderMap(scanner.nextLine());
+        //System.out.println("rows: " + rows + ", cols: " + cols);
         System.out.println("maze: ");
         Dave.getString();
         System.out.println("solving maze");
