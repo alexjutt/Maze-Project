@@ -259,7 +259,6 @@ public class finderMap{
                 }
                 if (canDown){
                     recursiveFloodSolve(x, y+1, stepNum+1);
-                }
             }
             else{
                 maze[x][y] = backupMaze[x][y];
