@@ -288,7 +288,7 @@ public class finderMap{
 
     private static char toHexDigit(int value){
         if(value < 0 || value > 15){
-            throw new IllegalArgumentException("Path values must be between 0 and 15");
+            throw new IllegalArgumentException("Path values must be between 0 and 15, hexidecimal");
         }
         return Character.forDigit(value, 16);
     }
