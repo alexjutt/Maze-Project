@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class finderMap{
     //public static String[][] maze == new String[][];
@@ -16,7 +17,7 @@ public class finderMap{
     public static boolean[][] DeadEnd = new boolean[rows][cols]; //whether each path spot leads to a dead end
     public static int weightSum = 0; //sum total of all steps taken so far
     public static boolean isSolved = false;
-    public static ArrayList<completeRoute> routes = new ArrayList(); //we're gonna add on more routes each completion
+    public static ArrayList<completeRoute> routes = new ArrayList<>(); //we're gonna add on more routes each completion
     public static int totalWeight = 0;
 
     public finderMap(String input){
@@ -89,23 +90,25 @@ public class finderMap{
 
     //represents the current state of the maze including where you have/have not visited. 
     
-    public static int[][] makeSolution(){
-        int[][] solution = new int[rows][cols];
+    public static char[][] makeSolution(){
+        char[][] solution = new char[rows][cols];
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < cols; j++){
-                if(Visted[i][j] >  0){
-                    //System.out.print(getVisited(i,j));
-                    solution[i][j] = getVisited(i,j);
+                if(backupMaze[i][j] == '!'){
+                    solution[i][j] = '!';
                 }
-                else if(backupMaze[i][j] == '!'){
-                    //System.out.print('!');
+                else if(Visted[i][j] >  0){
+                    //System.out.print(getVisited(i,j));
+                    System.out.println(toHexDigit(getVisited(i,j)));
+                    solution[i][j] = toHexDigit(getVisited(i,j));
                 }
                 else if(backupMaze[i][j] == 'x'){
                     //System.out.print('x');
-                    solution[i][j] = -1;
+                    solution[i][j] = 'x';
                 }
                 else{
                     //System.out.print('p');
+                    solution[i][j] = '0';
                 }
             }
             //System.out.println();
@@ -113,7 +116,7 @@ public class finderMap{
         return solution;   
     }
 
-        public static void printString(){
+    public static void printString(){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < cols; j++){
                 if(Visted[i][j] >  0){
@@ -126,7 +129,7 @@ public class finderMap{
                     System.out.print('x');
                 }
                 else{
-                    System.out.print('p');
+                    System.out.print(Integer.toHexString(weights[i][j]));
                 }
             }
             System.out.println();
@@ -144,58 +147,107 @@ public class finderMap{
 
     }
 
+    public static void removeDuplicatePaths(){
+        ArrayList<completeRoute> uniqueRoutes = new ArrayList<>();
+        
+        for(completeRoute current : routes){
+            boolean isDuplicate = false;
+            
+            // Check if current path matches any already added unique path
+            for(completeRoute unique : uniqueRoutes){
+                if(arePathsIdentical(current.path, unique.path)){
+                    isDuplicate = true;
+                    break;
+                }
+            }
+            
+            // Only add if it's not a duplicate
+            if(!isDuplicate){
+                uniqueRoutes.add(current);
+            }
+        }
+        
+        // Replace routes with unique routes only
+        routes = uniqueRoutes;
+    }
+    
+    public static boolean arePathsIdentical(char[][] path1, char[][] path2){
+        // Check if two paths are identical (same cells visited with same step order)
+        if(path1.length != path2.length){
+            return false;
+        }
+        
+        for(int i = 0; i < path1.length; i++){
+            if(path1[i].length != path2[i].length){
+                return false;
+            }
+            for(int j = 0; j < path1[i].length; j++){
+                if(path1[i][j] != path2[i][j]){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+
     public static void main(String args[]){
-        finderMap Dave= new finderMap("x!xxxxx\nx1x888#\nAabBxxx\nFfCcEeD");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter a maze: ");
+        String m1 = sc.next();
+        m1 = m1.replace("\\n", "\n");
+        //finderMap Dave= new finderMap("x!xxxxx\nx1x888#\nAabBxxx\nFfCcEeD");
+        finderMap Dave= new finderMap(m1);
         System.out.println("rows: " + rows + ", cols: " + cols);
         System.out.println("maze: ");
         Dave.printString();
         System.out.println("solving maze");
         recursiveFloodSolve(1, 6, 1);
+        
+        // Remove duplicate paths
+        removeDuplicatePaths();
+        
+        // Display all found routes
+        System.out.println("\n=== All paths found ===");
+        System.out.println("Total paths: " + routes.size());
+        for(int i = 0; i < routes.size(); i++){
+            System.out.println("\nPath " + (i+1) + " (weight: " + routes.get(i).tWeight + "):");
+            System.out.println(routes.get(i).toString());
+        }
     }
 
-    //solving the maze using flood fill, as specified in goal set 2
+    //solving the maze using flood fill to find all paths
     //int x and y are the coordinates where each recursive call references
     public static void recursiveFloodSolve(int x, int y, int stepNum){
-        if (!isSolved){
-            //System.out.println("visiting: " + x + ", " + y);
-            setVisited(x, y, stepNum);
-            //check for adjacent '!' spot
-            if ((x > 0 && maze[x-1][y] == '!') || 
-            (x < cols-1 && maze[x+1][y] == '!') || 
-            (y > 0 && maze[x][y-1] == '!') || 
-            (y < rows-1 && maze[x][y+1] == '!')){
-                cleanMaze();
-                routes.add(new completeRoute(sumTotalWeights() ,makeSolution())); //storing the next completed route
-                printString();
-                System.out.println(routes.get(0).tWeight);
-                totalWeight = 0; //resetting for the next path
-                System.out.println("Maze solved!");
-                isSolved = true;
-                return;
-            }
-            //checking left
-            if (x > 0 && maze[x-1][y] != 'x' && (getVisited(x-1, y) == 0) && !(DeadEnd[x-1][y])) {
-                recursiveFloodSolve(x-1, y, stepNum +1);
-            }
-            //checking up
-            if (y > 0 && maze[x][y-1] != 'x' && (getVisited(x, y-1) == 0) && !(DeadEnd[x][y-1])) {
-                recursiveFloodSolve(x, y-1, stepNum +1);
-            }
-            //checking right
-            if (x < cols-1 && maze[x+1][y] != 'x' && (getVisited(x+1, y) == 0) && !(DeadEnd[x+1][y])) {
-                recursiveFloodSolve(x+1, y, stepNum +1);
-            }
-            //checking down
-            if (y < rows-1 && maze[x][y+1] != 'x' && (getVisited(x, y+1) == 0) && !(DeadEnd[x][y+1])) {
-                recursiveFloodSolve(x, y+1, stepNum +1);
-            }
-            else{
-                maze[x][y] = backupMaze[x][y];
-                DeadEnd[x][y] = true;
-            }
-            //System.out.println("debugging ,last return statement");
-            return;
+        //System.out.println("visiting: " + x + ", " + y);
+        setVisited(x, y, stepNum);
+        
+        //check for adjacent '!' spot
+        if ((x > 0 && maze[x-1][y] == '!') || 
+        (x < rows-1 && maze[x+1][y] == '!') || 
+        (y > 0 && maze[x][y-1] == '!') || 
+        (y < cols-1 && maze[x][y+1] == '!')){
+            // Found a path to the goal, save it
+            routes.add(new completeRoute(sumTotalWeights(), makeSolution()));
+            System.out.println("Path found! Total weight: " + routes.get(routes.size()-1).tWeight);
+            // Continue searching for other paths (don't stop here)
         }
+        
+        // Check all four directions - can move if not wall and not currently visited
+        boolean canLeft = (x > 0 && maze[x-1][y] != 'x' && getVisited(x-1, y) == 0);
+        boolean canUp = (y > 0 && maze[x][y-1] != 'x' && getVisited(x, y-1) == 0);
+        boolean canRight = (x < rows-1 && maze[x+1][y] != 'x' && getVisited(x+1, y) == 0);
+        boolean canDown = (y < cols-1 && maze[x][y+1] != 'x' && getVisited(x, y+1) == 0);
+
+        // Explore all reachable neighbors
+        if (canLeft) recursiveFloodSolve(x-1, y, stepNum+1);
+        if (canUp) recursiveFloodSolve(x, y-1, stepNum+1);
+        if (canRight) recursiveFloodSolve(x+1, y, stepNum+1);
+        if (canDown) recursiveFloodSolve(x, y+1, stepNum+1);
+        
+        // Backtrack: clear visited status to allow other paths to use this cell
+        Visted[x][y] = 0;
+        return;
     }
 
     public static int sumTotalWeights(){
@@ -208,5 +260,38 @@ public class finderMap{
             }
         }
         return totalWeight;
+    }
+
+    public static int[] findHashtag(){
+        for(int i = 0; i < backupMaze.length; i++){
+            for(int j = 0; j < backupMaze[i].length; j++){
+                if(backupMaze[i][j] == '#'){
+                    return new int[]{i, j};
+                }
+            }
+        }
+        System.out.println("findHashtag() error");
+        return new int[]{-1,-1};
+    }
+
+    public static boolean anyRouteHasValueAt(int row, int col, int value){
+        if(row < 0 || row >= rows || col < 0 || col >= cols){
+            throw new IndexOutOfBoundsException("Coordinates are outside the maze");
+        }
+
+        char hexValue = toHexDigit(value);
+        for(completeRoute route : routes){
+            if(route.path[row][col] == hexValue){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static char toHexDigit(int value){
+        if(value < 0 || value > 15){
+            throw new IllegalArgumentException("Path values must be between 0 and 15, hexidecimal");
+        }
+        return Character.forDigit(value, 16);
     }
 }
