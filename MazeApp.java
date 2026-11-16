@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
+import java.util.Scanner;
 
 public class MazeApp extends Application {
     @Override
@@ -12,7 +13,8 @@ public class MazeApp extends Application {
         GridPane grid = new GridPane();
         grid.setHgap(10); 
         grid.setVgap(10);
-        finderMap newMap = new finderMap("\"x!xxxxx\\nx1x888#\\nAabBxxx\\nFfCcEeD\"");
+        Scanner s = new Scanner(System.in);
+        finderMap newMap = new finderMap(s.nextLine());
         newMap.main(new String[]{""});
         int indexOfLowest = 0;
         int lowestWeight = 0;
