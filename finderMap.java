@@ -87,8 +87,10 @@ public class finderMap{
         //System.out.println("rows: " + rows + ", cols: " + cols);
         System.out.println("maze: ");
         Dave.getString();
+        int[] hashtag = findHashtag();
+        //System.out.println("hashtag found at: " + hashtag[0] + ", " + hashtag[1]);
         System.out.println("solving maze");
-        recursiveFloodSolve(1, 6);
+        recursiveFloodSolve(hashtag[0], hashtag[1]);
 }
 
     //solving the maze using flood fill, as specified in goal set 2
@@ -140,5 +142,17 @@ public class finderMap{
             //System.out.println("debugging ,last return statement");
             return;
         }
+    }
+
+    public static int[] findHashtag(){
+        for(int i = 0; i < maze.length; i++){
+            for(int j = 0; j < maze[i].length; j++){
+                if(maze[i][j] == '#'){
+                    return new int[]{i, j};
+                }
+            }
+        }
+        System.out.println("findHashtag() error");
+        return new int[]{-1,-1};
     }
 }
