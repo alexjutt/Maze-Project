@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class finderMap{
     //public static String[][] maze == new String[][];
@@ -114,7 +115,7 @@ public class finderMap{
         return solution;   
     }
 
-        public static void printString(){
+    public static void printString(){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < cols; j++){
                 if(Visted[i][j] >  0){
@@ -146,7 +147,11 @@ public class finderMap{
     }
 
     public static void main(String args[]){
-        finderMap Dave= new finderMap("x!xxxxx\nx1x888#\nAabBxxx\nFfCcEeD");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter a maze: ");
+        String m1 = sc.next();
+        //finderMap Dave= new finderMap("x!xxxxx\nx1x888#\nAabBxxx\nFfCcEeD");
+        finderMap Dave= new finderMap(m1);
         System.out.println("rows: " + rows + ", cols: " + cols);
         System.out.println("maze: ");
         Dave.printString();
