@@ -153,7 +153,7 @@ public class finderMap{
         for(completeRoute current : routes){
             boolean isDuplicate = false;
             
-            // Check if current path matches any already added unique path
+
             for(completeRoute unique : uniqueRoutes){
                 if(arePathsIdentical(current.path, unique.path)){
                     isDuplicate = true;
@@ -161,18 +161,18 @@ public class finderMap{
                 }
             }
             
-            // Only add if it's not a duplicate
+
             if(!isDuplicate){
                 uniqueRoutes.add(current);
             }
         }
         
-        // Replace routes with unique routes only
+
         routes = uniqueRoutes;
     }
     
     public static boolean arePathsIdentical(char[][] path1, char[][] path2){
-        // Check if two paths are identical (same cells visited with same step order)
+
         if(path1.length != path2.length){
             return false;
         }
@@ -204,10 +204,10 @@ public class finderMap{
         System.out.println("solving maze");
         recursiveFloodSolve(1, 6, 1);
         
-        // Remove duplicate paths
+
         removeDuplicatePaths();
         
-        // Display all found routes
+
         System.out.println("\n=== All paths found ===");
         System.out.println("Total paths: " + routes.size());
         for(int i = 0; i < routes.size(); i++){
@@ -227,25 +227,22 @@ public class finderMap{
         (x < rows-1 && maze[x+1][y] == '!') || 
         (y > 0 && maze[x][y-1] == '!') || 
         (y < cols-1 && maze[x][y+1] == '!')){
-            // Found a path to the goal, save it
+
             routes.add(new completeRoute(sumTotalWeights(), makeSolution()));
             System.out.println("Path found! Total weight: " + routes.get(routes.size()-1).tWeight);
-            // Continue searching for other paths (don't stop here)
+
         }
-        
-        // Check all four directions - can move if not wall and not currently visited
+       
         boolean canLeft = (x > 0 && maze[x-1][y] != 'x' && getVisited(x-1, y) == 0);
         boolean canUp = (y > 0 && maze[x][y-1] != 'x' && getVisited(x, y-1) == 0);
         boolean canRight = (x < rows-1 && maze[x+1][y] != 'x' && getVisited(x+1, y) == 0);
         boolean canDown = (y < cols-1 && maze[x][y+1] != 'x' && getVisited(x, y+1) == 0);
 
-        // Explore all reachable neighbors
         if (canLeft) recursiveFloodSolve(x-1, y, stepNum+1);
         if (canUp) recursiveFloodSolve(x, y-1, stepNum+1);
         if (canRight) recursiveFloodSolve(x+1, y, stepNum+1);
         if (canDown) recursiveFloodSolve(x, y+1, stepNum+1);
         
-        // Backtrack: clear visited status to allow other paths to use this cell
         Visted[x][y] = 0;
         return;
     }
